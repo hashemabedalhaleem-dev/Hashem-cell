@@ -21,7 +21,15 @@ export function CreateListingPage({ onNavigate }: CreateListingPageProps) {
   const [startingPrice, setStartingPrice] = useState("");
   const [minBidIncrement, setMinBidIncrement] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const [imagePreview, setImagePreview] = useState<string>("");
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onloadend = () => setImagePreview(reader.result as string);
+    reader.readAsDataURL(file);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,7 +43,7 @@ export function CreateListingPage({ onNavigate }: CreateListingPageProps) {
       description,
       category,
       price: isAuction ? 0 : parseFloat(price),
-      images: imageUrl ? [imageUrl] : [],
+      images: imagePreview ? [imagePreview] : [],
       isAuction,
       startingPrice: isAuction ? parseFloat(startingPrice) : undefined,
       currentBid: isAuction ? parseFloat(startingPrice) : undefined,
@@ -61,8 +69,15 @@ export function CreateListingPage({ onNavigate }: CreateListingPageProps) {
         </div>
 
         <div>
-          <Label>رابط صورة</Label>
-          <Input value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} placeholder="https://..." />
+          <Label>صورة المنتج</Label>
+          <Input type="file" accept="image/*" onChange={handleImageChange} />
+          {imagePreview && (
+            <img
+              src={imagePreview}
+              alt="معاينة الصورة"
+              className="mt-2 h-32 w-32 rounded-lg object-cover border border-slate-200"
+            />
+          )}
         </div>
 
         <div>
@@ -79,56 +94,4 @@ export function CreateListingPage({ onNavigate }: CreateListingPageProps) {
               <SelectItem value="other">أخرى</SelectItem>
             </SelectContent>
           </Select>
-        </div>
-
-        <div>
-          <Label>نوع الإعلان</Label>
-          <RadioGroup value={listingType} onValueChange={setListingType}>
-            <label className="flex items-center gap-2 text-sm text-slate-700">
-              <RadioGroupItem value="fixed" />
-              سعر ثابت
-            </label>
-            <label className="flex items-center gap-2 text-sm text-slate-700">
-              <RadioGroupItem value="auction" />
-              مزاد
-            </label>
-          </RadioGroup>
-        </div>
-
-        {listingType === "fixed" ? (
-          <div>
-            <Label>السعر ($)</Label>
-            <Input type="number" value={price} onChange={(e) => setPrice(e.target.value)} required />
-          </div>
-        ) : (
-          <>
-            <div>
-              <Label>سعر البداية ($)</Label>
-              <Input
-                type="number"
-                value={startingPrice}
-                onChange={(e) => setStartingPrice(e.target.value)}
-                required
-              />
-            </div>
-            <div>
-              <Label>أقل زيادة للمزايدة ($)</Label>
-              <Input
-                type="number"
-                value={minBidIncrement}
-                onChange={(e) => setMinBidIncrement(e.target.value)}
-                required
-              />
-            </div>
-            <div>
-              <Label>تاريخ انتهاء المزاد</Label>
-              <Input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} required />
-            </div>
-          </>
-        )}
-
-        <Button type="submit">نشر الإعلان</Button>
-      </form>
-    </div>
-  );
-}
+        </d
