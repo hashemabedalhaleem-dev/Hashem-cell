@@ -53,8 +53,7 @@ export function CreateListingPage({ onNavigate }: CreateListingPageProps) {
 
     onNavigate("home");
   };
-
-  return (
+   return (
     <div className="p-4">
       <h1 className="mb-4 text-lg font-bold text-slate-900">إضافة إعلان جديد</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -65,4 +64,74 @@ export function CreateListingPage({ onNavigate }: CreateListingPageProps) {
 
         <div>
           <Label>الوصف</Label>
-          <Textarea value={description}
+          <Textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={4} required />
+        </div>
+
+        <div>
+          <Label>صورة المنتج</Label>
+          <Input type="file" accept="image/*" onChange={handleImageChange} />
+          {imagePreview && (
+            <img
+              src={imagePreview}
+              alt="معاينة الصورة"
+              className="mt-2 h-32 w-32 rounded-lg object-cover border border-slate-200"
+            />
+          )}
+        </div>
+
+        <div>
+          <Label>الفئة</Label>
+          <Select value={category} onValueChange={setCategory}>
+            <SelectTrigger>
+              <SelectValue placeholder="اختر الفئة" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="electronics">إلكترونيات</SelectItem>
+              <SelectItem value="furniture">أثاث</SelectItem>
+              <SelectItem value="clothes">ملابس</SelectItem>
+              <SelectItem value="vehicles">مركبات</SelectItem>
+              <SelectItem value="other">أخرى</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+             <div>
+          <Label>نوع الإعلان</Label>
+          <RadioGroup value={listingType} onValueChange={setListingType} className="mt-2 flex gap-4">
+            <div className="flex items-center gap-2">
+              <RadioGroupItem value="fixed" id="fixed" />
+              <Label htmlFor="fixed">سعر ثابت</Label>
+            </div>
+            <div className="flex items-center gap-2">
+              <RadioGroupItem value="auction" id="auction" />
+              <Label htmlFor="auction">مزاد</Label>
+            </div>
+          </RadioGroup>
+        </div>
+
+        {listingType === "fixed" ? (
+          <div>
+            <Label>السعر</Label>
+            <Input type="number" min="0" value={price} onChange={(e) => setPrice(e.target.value)} required />
+          </div>
+        ) : (
+          <>
+            <div>
+              <Label>سعر البداية</Label>
+              <Input type="number" min="0" value={startingPrice} onChange={(e) => setStartingPrice(e.target.value)} required />
+            </div>
+            <div>
+              <Label>أقل زيادة في المزايدة</Label>
+              <Input type="number" min="0" value={minBidIncrement} onChange={(e) => setMinBidIncrement(e.target.value)} required />
+            </div>
+            <div>
+              <Label>تاريخ انتهاء المزاد</Label>
+              <Input type="datetime-local" value={endDate} onChange={(e) => setEndDate(e.target.value)} required />
+            </div>
+          </>
+        )}
+
+        <Button type="submit" className="w-full">نشر الإعلان</Button>
+      </form>
+    </div>
+  );
+}   
