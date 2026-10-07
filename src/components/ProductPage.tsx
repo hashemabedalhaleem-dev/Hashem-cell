@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Heart, MessageCircle, ShoppingCart, Hammer, Star, Shield } from "lucide-react";
+import { Heart, MessageCircle, ShoppingCart, Hammer, Star, Shield, Phone } from "lucide-react";
 
 interface ProductPageProps {
   productId: string;
@@ -72,6 +72,10 @@ export function ProductPage({ productId, onNavigate }: ProductPageProps) {
               <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
               {seller.rating.toFixed(1)} · {seller.successfulSales} عملية بيع
             </p>
+            <a href={`tel:${seller.phone}`} className="mt-1 flex items-center gap-1 text-xs text-emerald-700">
+              <Phone className="h-3 w-3" />
+              {seller.phone}
+            </a>
           </div>
         </CardContent>
       </Card>
