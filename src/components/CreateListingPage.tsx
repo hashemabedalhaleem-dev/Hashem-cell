@@ -65,33 +65,4 @@ export function CreateListingPage({ onNavigate }: CreateListingPageProps) {
 
         <div>
           <Label>الوصف</Label>
-          <Textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={4} required />
-        </div>
-
-        <div>
-          <Label>صورة المنتج</Label>
-          <Input type="file" accept="image/*" onChange={handleImageChange} />
-          {imagePreview && (
-            <img
-              src={imagePreview}
-              alt="معاينة الصورة"
-              className="mt-2 h-32 w-32 rounded-lg object-cover border border-slate-200"
-            />
-          )}
-        </div>
-
-        <div>
-          <Label>الفئة</Label>
-          <Select value={category} onValueChange={setCategory}>
-            <SelectTrigger>
-              <SelectValue placeholder="اختر الفئة" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="electronics">إلكترونيات</SelectItem>
-              <SelectItem value="furniture">أثاث</SelectItem>
-              <SelectItem value="clothes">ملابس</SelectItem>
-              <SelectItem value="vehicles">مركبات</SelectItem>
-              <SelectItem value="other">أخرى</SelectItem>
-            </SelectContent>
-          </Select>
-        </d
+          <Textarea value={description}
